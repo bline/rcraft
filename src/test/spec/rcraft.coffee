@@ -48,7 +48,7 @@
 
 ###
 
-Rcraft = require '../../lib/rcraft'
+Rcraft = require 'rcraft'
 
 describe "awesome", ->
   it "should be awesome.", ->
