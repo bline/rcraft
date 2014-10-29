@@ -1,4 +1,4 @@
-# rcraft [![Build Status](https://secure.travis-ci.org/bline/rcraft.png?branch=master)](http://travis-ci.org/bline/rcraft) [![Coverage Status](https://coveralls.io/repos/bline/rcraft/badge.png)](https://coveralls.io/r/bline/rcraft)
+# rcraft [![Build Status](https://secure.travis-ci.org/bline/rcraft.png?branch=master)](http://travis-ci.org/bline/rcraft) [![Coverage Status](https://coveralls.io/repos/bline/rcraft/badge.png?branch=master)](https://coveralls.io/r/bline/rcraft?branch=master)
 
 Micro compositing web framework inspired by [Yeoman](http://yeoman.io/) and [Grunt](http://gruntjs.com/).
 
