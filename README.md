@@ -1,6 +1,6 @@
 # rcraft [![Build Status](https://secure.travis-ci.org/bline/rcraft.png?branch=master)](http://travis-ci.org/bline/rcraft)
 
-Micro compositing framework inspired by [Yeoman](http://yeoman.io/) and [Grunt](http://gruntjs.com/).
+Micro compositing web framework inspired by [Yeoman](http://yeoman.io/) and [Grunt](http://gruntjs.com/).
 
 Just starting out, nothing to see here..
 
