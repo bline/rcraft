@@ -9,7 +9,6 @@ util = require 'gulp-util'
 $ = require('gulp-load-plugins')()
 del = require 'del'
 pkg = require './package.json'
-chalk = require 'chalk'
 CliTable = require 'cli-table'
 
 # coffeelint all coffee scripts
