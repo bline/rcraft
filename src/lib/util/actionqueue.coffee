@@ -18,7 +18,8 @@ class ActionQueue extends events.EventEmitter
       @_queues[queueName] = makeQ queueName
 
   add: (queueName, cb) ->
-    @_queues[quueueName].push cb
+    @_queues[queueName] ||= []
+    @_queues[queueName].push cb
 
   run: (queueName, done) ->
     assert _.isString(queueName), 'queueName not supplied'
