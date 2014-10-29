@@ -1,4 +1,4 @@
-describe "Environemt", ->
+describe "Environment", ->
   Environment = require 'util/environment'
   it "should load", ->
     expect(Environment).be.an.object
