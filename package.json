@@ -60,6 +60,7 @@
   },
   "keywords": [],
   "dependencies": {
+    "abyssa": "^6.6.0",
     "lodash": "^2.4.1",
     "queue": "^3.0.10"
   }
