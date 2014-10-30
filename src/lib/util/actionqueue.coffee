@@ -18,11 +18,13 @@ class ActionQueue extends events.EventEmitter
       @_queues[queueName] = makeQ queueName
 
   add: (queueName, cb) ->
-    @_queues[queueName] ||= []
+    assert _.isObject(@_queues[queueName]), 'invalid queue name'
     @_queues[queueName].push cb
 
   run: (queueName, done) ->
     assert _.isString(queueName), 'queueName not supplied'
+    assert _.isObject(@_queues[queueName]), 'invalid queue name'
     @_queues[queueName].start done
+
 
 module.exports = ActionQueue
