@@ -19,6 +19,10 @@ describe "Environment", ->
         @options = that.FakeConstructed = opts
     @ev.register 'foo:bar', @FakeComposite
 
+  describe "Environment#error", ->
+    it "should throw", ->
+      fn = => @ev.error('foo')
+      expect(fn).to.throw(Error)
   describe "Environment#constructor", ->
     it "should instantiate", ->
       expect(@ev).be.instanceOf Environment
