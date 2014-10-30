@@ -27,7 +27,8 @@ gulp.task 'distclean', ['clean'], (done) ->
 # to require modules for testing
 gulp.task 'build-test', ['clean'], ->
   testHeader = """
-# not done under karma webpack tests
+# no module.path under karma webpack tests
+# but we handle the paths in the webpack conf
 if module.paths
   module.paths.unshift process.cwd() + "/lib"
 
@@ -50,19 +51,24 @@ gulp.task 'build-lib', ['clean'], ->
 # lint clean and build everything
 gulp.task 'build', ['lint', 'clean', 'build-lib', 'build-test']
 
+testFiles = ['test/helpers/**/*.js', 'test/spec/**/*.js']
 # helper to run coverage generation with given options
 runCoverage = (opts) ->
-  gulp.src(['test/helpers/**/*.js', 'test/spec/**/*.js'], read: false)
+  gulp.src(testFiles, read: false)
     .pipe($.coverage.instrument
       pattern: ['lib/**/*.js', '!node_modules']
       debugDirectory: 'debug')
+    .pipe($.plumber())
     .pipe($.mocha reporter: 'dot').on('error', (e) -> @emit 'end') # test errors dropped
+    .pipe($.plumber.stop())
     .pipe($.coverage.gather())
     .pipe($.coverage.format opts)
 
-runTest = (opts) ->
-  gulp.src(['test/helpers/**/*.js', 'test/spec/**/*.js'], read: false)
-    .pipe($.mocha opts).on('error', (e) -> @emit 'end') # test errors dropped
+runTest = (stream, opts) ->
+  stream
+    .pipe($.plumber())
+    .pipe($.mocha opts)
+    .pipe($.plumber.stop())
 
 # test and create coverage
 gulp.task 'coverage', ['build'], ->
@@ -76,18 +82,22 @@ gulp.task 'coveralls', ['build'], ->
   runCoverage(reporter: 'lcov')
     .pipe($.coveralls())
 
+# run tests but only show progress
 gulp.task 'test-quiet', ['build'], ->
-  runTest reporter: 'dot'
+  runTest gulp.src(testFiles), reporter: 'dot'
 
+# run and display all tests
 gulp.task 'test', ['build'], ->
-  runTest reporter: 'spec'
+  runTest gulp.src(testFiles), reporter: 'spec'
 
+# run tests from phantomjs with karma
 gulp.task 'karma', ['test-quiet'], (done) ->
   karma.start
     configFile: require('path').join __dirname, './karma.conf.js'
     singleRun: true
   , done
 
+# uses chrome and firefox
 gulp.task 'karma-gui', ['test-quiet'], (done) ->
   karma.start
     configFile: require('path').join __dirname, './karma.conf.js'
@@ -95,17 +105,20 @@ gulp.task 'karma-gui', ['test-quiet'], (done) ->
     singleRun: true
   , done
 
+# doesn't work... yet
 gulp.task 'watch-coverage', ['coverage'], (done) ->
   $.livereload.listen port: 35729
   require('opn') './coverage.html', null, util.log
-  $.watch('src/**/*.coffee', ['coverage'])
-  $.watch('./coverage.html').on 'change', $.livereload
+  gulp.watch('src/**/*.coffee', ['coverage'])
+  gulp.watch('./coverage.html').on 'change', $.livereload
   return
 
+# watch all coffee files and run tests for changes
 gulp.task 'watch', (done) ->
-  $.watch('src/**/*.coffee', ['test'])
+  gulp.watch 'src/**/*.coffee', ['test']
   return
 
+# default, test
 gulp.task 'default', ['test']
 
 
